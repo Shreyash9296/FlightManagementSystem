@@ -1,4 +1,4 @@
-package com.spring.login.model;
+package com.spring.model;
 
 import javax.persistence.*;
 

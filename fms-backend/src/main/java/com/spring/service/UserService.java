@@ -1,6 +1,6 @@
-package com.spring.login.service;
-import com.spring.login.model.user;
-import com.spring.login.repository.UserRepository;
+package com.spring.service;
+import com.spring.model.user;
+import com.spring.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.Password;
 import org.springframework.beans.factory.annotation.Autowired;
