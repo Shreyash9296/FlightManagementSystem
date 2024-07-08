@@ -1,4 +1,6 @@
-package com.spring.Login.config;
+package com.spring.config;
+import  com.spring.service.UserService;
+import com.spring.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/signup", "/login").permitAll()
+                .antMatchers("/api/bookings/").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
