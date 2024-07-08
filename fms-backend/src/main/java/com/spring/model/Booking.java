@@ -80,4 +80,16 @@ public class Booking{
     private LocalDateTime arrivalTime;
     private string passengerName;
     private string passengerEmail;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    private double price;
+
+
 }
