@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProjectStyle.css';
+import '../style/ProjectStyle.css';
 
 const Header = () => (
   <header className="section__container header__container header__background">

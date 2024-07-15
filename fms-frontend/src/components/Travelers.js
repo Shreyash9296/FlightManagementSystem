@@ -1,8 +1,8 @@
 import React from 'react';
-import './ProjectStyle.css';
+import '../style/ProjectStyle.css';
 
 const Travelers = () => (
-  <><link rel='stylesheet' href='./ProjectStyle.css'></link><section className="section__container travellers__container">
+  <><link rel='stylesheet' href='../style/ProjectStyle.css'></link><section className="section__container travellers__container">
     <h2 className="section__header">Best travel places to visit</h2>
     <div className="travellers__grid">
       <div className="travellers__card">
