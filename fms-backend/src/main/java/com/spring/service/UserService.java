@@ -16,26 +16,31 @@ public class UserService {
     UserRepository userRepository;
 
 
-    public List <User> getAllUsers()
-    {
-       return userRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 
-    public User getUserById(int id)
-    {
+    public User getUserById(int id) {
         return userRepository.findById(id).get();
 
     }
 
-    public void createUser(User  user)
-    {
+    public void createUser(User user) {
         userRepository.save(user);
     }
     //delete a specific record
 
-    public void deleteUserById(int id)
-    {
+    public void deleteUserById(int id) {
         userRepository.deleteById(id);
+    }
+
+    public User authenticateUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        } else {
+            return null;
+        }
     }
 }

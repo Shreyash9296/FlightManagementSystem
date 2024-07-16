@@ -16,6 +16,7 @@ public class User {
     private int id;
     private String name;
     private String email;
+    private String password;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
@@ -35,4 +36,11 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
