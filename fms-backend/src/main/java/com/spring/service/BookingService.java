@@ -8,44 +8,44 @@ import com.spring.model.Booking;
 import com.spring.model.User;
 import com.spring.repository.BookingRepository;
 import com.spring.repository.UserRepository;
+
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
-
     @Autowired
     BookingRepository bookingRepository;
 
-
-    public List <Booking> getAllBookings()
-    {
+    public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
-
     }
 
-    public Booking getBookingById(int id)
-    {
-        return bookingRepository.findById(id).get();
-
+    public Booking getBookingById(int id) {
+        java.util.Optional<Booking> optionalBooking = bookingRepository.findById(id);
+        return optionalBooking.orElse(null); // Return null if not found
     }
 
-    public void createBooking(Booking  booking)
-    {
-        bookingRepository.save(booking);
+    public Booking createBooking(Booking booking) {
+        return bookingRepository.save(booking); // Return the saved booking
     }
+
     public Booking updateBooking(int id, Booking booking) {
         Booking existingBooking = getBookingById(id);
-        existingBooking.setPassengerName(booking.getPassengerName());
-        existingBooking.setContactNumber(booking.getContactNumber());
-        existingBooking.setEmail(booking.getEmail());
-        existingBooking.setFlight(booking.getFlight());
-        return bookingRepository.save(existingBooking);
+        if (existingBooking != null) {
+            existingBooking.setPassengerName(booking.getPassengerName());
+            existingBooking.setContactNumber(booking.getContactNumber());
+            existingBooking.setEmail(booking.getEmail());
+            existingBooking.setFlight(booking.getFlight());
+            return bookingRepository.save(existingBooking); // Return the updated booking
+        } else {
+            return null; // Return null if the booking was not found
+        }
     }
-    //delete a specific record
 
-    public void deleteBookingById(int id)
-    {
+    public void deleteBookingById(int id) {
         bookingRepository.deleteById(id);
     }
 }

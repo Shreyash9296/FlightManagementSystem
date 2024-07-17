@@ -5,18 +5,20 @@ import javax.persistence.*;
 @Entity
 @Table
 public class Booking {
-
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String passengerName;
     private String contactNumber;
     private String email;
+    private int numberOfPassengers;
+
     @ManyToOne
-    @JoinColumn(name = "flight_id", insertable = false, updatable = false)
+    @JoinColumn(name = "flight_id")
     private Flight flight;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // Getters and Setters
 
     public int getId() {
         return id;
@@ -49,10 +51,19 @@ public class Booking {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getNumberOfPassengers() {
+        return numberOfPassengers;
+    }
+
+    public void setNumberOfPassengers(int numberOfPassengers) {
+        this.numberOfPassengers = numberOfPassengers;
+    }
+
     public Flight getFlight() {
         return flight;
     }
-//
+
     public void setFlight(Flight flight) {
         this.flight = flight;
     }

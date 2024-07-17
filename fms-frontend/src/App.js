@@ -5,6 +5,7 @@ import BookingForm from './components/BookingForm';
 import { Home } from './components/Home';
 import Travelers from './components/Travelers';
 import Footer from './components/Footer';
+import FlightBookingComponent from './components/Flights';
 import ProfileViewer from './components/ProfileViewer'; // Import ProfileViewer component
 import AdminDashboardComponent from './components/AdminDashboardComponent'; // Import AdminDashboardComponent
 import './style/ProjectStyle.css';
@@ -26,6 +27,7 @@ const App = () => {
             <Header />
             <BookingForm />
             <Travelers />
+            <FlightBookingComponent /> {/* Render FlightBookingComponent */}
             {isLoggedIn ? <ProfileViewer /> : <Home />} {/* Conditional rendering based on isLoggedIn state */}
             {isLoggedIn && <AdminDashboardComponent />} {/* Render AdminDashboardComponent if logged in */}
             <Footer />

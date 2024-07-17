@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-
-export function Contact() {
-  const [name, setName] = useState('');
+import '../style/contact.css'
+export function Contact() {const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Handle form submission logic here
+    // Example: sendFormToServer(name, email, message);
+    setSuccess(true); // Assuming success for demonstration
+  };
+
   return (
-    <div>
+    <div className="contact-container">
       <h1>Contact Us</h1>
-      <form>
+      <form className="contact-form" onSubmit={handleSubmit}>
         <label>
           Name:
           <input
@@ -41,10 +47,9 @@ export function Contact() {
         </label>
         <br />
         <button type="submit">Send Message</button>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        {success && <div style={{ color: 'green' }}>Message sent successfully!</div>}
+        {error && <div className="error">{error}</div>}
+        {success && <div className="success">Message sent successfully!</div>}
       </form>
     </div>
   );
 }
-
