@@ -6,22 +6,18 @@ import { Home } from './components/Home';
 import Travelers from './components/Travelers';
 import Footer from './components/Footer';
 import ProfileViewer from './components/ProfileViewer'; // Import ProfileViewer component
+import AdminDashboardComponent from './components/AdminDashboardComponent'; // Import AdminDashboardComponent
 import './style/ProjectStyle.css';
 
 const App = () => {
-    
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    
     const handleLogin = () => {
-        setIsLoggedIn(true); 
-       
+        setIsLoggedIn(true);
     };
 
-    
     const handleLogout = () => {
-        setIsLoggedIn(false); 
-        
+        setIsLoggedIn(false);
     };
 
     return (
@@ -31,6 +27,7 @@ const App = () => {
             <BookingForm />
             <Travelers />
             {isLoggedIn ? <ProfileViewer /> : <Home />} {/* Conditional rendering based on isLoggedIn state */}
+            {isLoggedIn && <AdminDashboardComponent />} {/* Render AdminDashboardComponent if logged in */}
             <Footer />
         </div>
     );

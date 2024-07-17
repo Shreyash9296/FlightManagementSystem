@@ -1,25 +1,22 @@
-import React from 'react'
-import '../style/ProjectStyle.css'
+import React from 'react';
 import { Link } from 'react-router-dom';
-// import { Home } from './Home';
+import { Routes, Route } from 'react-router-dom';
+import '../style/ProjectStyle.css';
 import { LoginPage } from './Login';
-import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
-// import { Profile } from './Profile';
-import {About} from './About';
-import {Contact} from './Contact';
-import {Destination} from './Destination';
-import {Seats} from './Seats';
+import { About } from './About';
+import { Contact } from './Contact';
+import { Destination } from './Destination';
+import { Seats } from './Seats';
 import Registration from './Registration';
 import { Home } from './Home';
 import ProfileViewer from './ProfileViewer';
-
+import AdminLoginComponent from './AdminLoginComponent'; 
+import AdminDashboardComponent from './AdminDashboardComponent';
 export const Nav = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
-    
-    
     window.location.reload(); // Reload page to reflect logout status
   };
 
@@ -32,26 +29,35 @@ export const Nav = () => {
         <Link to="/Destination">Destination</Link>
         <Link to="/Seat">Find Seats</Link>
         {isLoggedIn ? (
-          <button onClick={handleLogout}>Logout</button>
+          <>
+            <button onClick={handleLogout}>Logout</button>
+            <button className="nav-button">
+              <Link to="/profileviewer">Profile</Link>
+            </button>
+            <button className="nav-button">
+              <Link to="/admin/dashboard">Admin Dashboard</Link>
+            </button>
+          </>
         ) : (
-          <Link to="/login">Login</Link>
-        )}
-        {isLoggedIn && (
-          <button className="nav-button">
-          <Link to="/profile">Profile</Link>
-        </button>
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/admin/login">Admin Login</Link>
+          </>
         )}
       </nav>
 
       {/* Routes for navigation */}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Destination" element={<Destination />} />
-        <Route path="/Seats" element={<Seats />} />
+        <Route path="/Seat" element={<Seats />} />
         <Route path="/Login" element={<LoginPage />} />
         <Route path="/Registration" element={<Registration />} />
-        <Route path="/profile" element={<ProfileViewer />} />
+        <Route path="/profileviewer" element={<ProfileViewer />} />
+        <Route path="/admin/login" element={<AdminLoginComponent />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardComponent />} />
       </Routes>
     </div>
   );

@@ -30,4 +30,14 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/login")
+    public ResponseEntity<String> loginAdmin(@RequestBody Admin loginRequest) {
+        // Implement your login logic here, authenticate user
+        Admin admin = adminService.findByUsername(loginRequest.getUsername());
+        if (admin != null && admin.getPassword().equals(loginRequest.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid credentials");
+        }
+    }
 }

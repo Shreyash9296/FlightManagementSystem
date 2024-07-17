@@ -56,6 +56,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/admin/register").hasRole("SUPER_ADMIN")
+                .antMatchers("/admin/login").permitAll()  // Allow access to login endpoint without authentication
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/flights/**").permitAll()
                 .antMatchers("/user/**").permitAll()
@@ -74,4 +75,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 }
             }, UsernamePasswordAuthenticationFilter.class);
     }
+    
 }
