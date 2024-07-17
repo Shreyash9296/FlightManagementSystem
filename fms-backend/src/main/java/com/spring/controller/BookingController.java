@@ -6,57 +6,49 @@ import com.spring.model.Booking;
 import com.spring.model.User;
 import com.spring.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
-
     @Autowired
     private BookingService bookingService;
 
     @GetMapping
-    private List<Booking> getAllBooking()
-    {
+    public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
-
     }
 
     @GetMapping("/{id}")
-    private Booking getBookingById(@PathVariable("id") int id)
-    {
-        return bookingService.getBookingById(id);
+    public ResponseEntity<Booking> getBookingById(@PathVariable("id") int id) {
+        Booking booking = bookingService.getBookingById(id);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    private int createBooking(@RequestBody Booking booking)
-    {
-        bookingService.createBooking(booking);
-        return booking.getId();
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+        Booking createdBooking = bookingService.createBooking(booking);
+        return ResponseEntity.ok(createdBooking);
     }
+
     @PutMapping("/{id}")
-    public Booking updateBooking(@PathVariable int id, @RequestBody Booking booking) {
-        return bookingService.updateBooking(id, booking);
+    public ResponseEntity<Booking> updateBooking(@PathVariable int id, @RequestBody Booking booking) {
+        Booking updatedBooking = bookingService.updateBooking(id, booking);
+        if (updatedBooking != null) {
+            return ResponseEntity.ok(updatedBooking);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    private void deleteBookingById(@PathVariable ("id") int id)
-    {
+    public ResponseEntity<Void> deleteBooking(@PathVariable("id") int id) {
         bookingService.deleteBookingById(id);
+        return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-    /*
-     * @RequestMapping("/insert") public String index() {
-     *
-     * jdbc.execute("insert into user(name,email) values('Manisha','m@gmail.com')");
-     *
-     * return "Row inserted successfully"; }
-     */
-
 }

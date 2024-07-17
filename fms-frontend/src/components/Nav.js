@@ -6,7 +6,7 @@ import { LoginPage } from './Login';
 import { About } from './About';
 import { Contact } from './Contact';
 import { Destination } from './Destination';
-import { Seats } from './Seats';
+import FlightBookingComponent from './Flights';
 import Registration from './Registration';
 import { Home } from './Home';
 import ProfileViewer from './ProfileViewer';
@@ -27,14 +27,14 @@ export const Nav = () => {
         <Link to="/About">About</Link>
         <Link to="/Contact">Contact Us</Link>
         <Link to="/Destination">Destination</Link>
-        <Link to="/Seat">Find Seats</Link>
+        <Link to="/Flights">Flights</Link>
         {isLoggedIn ? (
           <>
-            <button onClick={handleLogout}>Logout</button>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
             <button className="nav-button">
               <Link to="/profileviewer">Profile</Link>
             </button>
-            <button className="nav-button">
+            <button className="nav-button-dashboard">
               <Link to="/admin/dashboard">Admin Dashboard</Link>
             </button>
           </>
@@ -52,7 +52,7 @@ export const Nav = () => {
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Destination" element={<Destination />} />
-        <Route path="/Seat" element={<Seats />} />
+        <Route path="/Flights" element={<FlightBookingComponent />} /> {/* Render FlightBookingComponent only on /Flights route */}
         <Route path="/Login" element={<LoginPage />} />
         <Route path="/Registration" element={<Registration />} />
         <Route path="/profileviewer" element={<ProfileViewer />} />
@@ -62,5 +62,6 @@ export const Nav = () => {
     </div>
   );
 };
+
 
 export default Nav;

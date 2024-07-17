@@ -1,104 +1,144 @@
-// AdminDashboardComponent.jsx
-
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // Import datepicker styles
-import '../style/admin.css'
-const AdminDashboardComponent = () => {
-  const [flightNumber, setFlightNumber] = useState('');
-  const [airline, setAirline] = useState('');
-  const [departureCity, setDepartureCity] = useState('');
-  const [arrivalCity, setArrivalCity] = useState('');
-  const [departureTime, setDepartureTime] = useState(new Date());
-  const [arrivalTime, setArrivalTime] = useState(new Date());
-  const [price, setPrice] = useState('');
+import '../style/admindash.css';
 
-  const handleSaveFlight = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/flights', {
-        flightNumber,
-        airline,
-        departureCity,
-        arrivalCity,
-        departureTime,
-        arrivalTime,
-        price,
-      });
+const AdminDashboardComponent = () => {const [flightData, setFlightData] = useState({
+  flightNumber: '',
+  airline: '',
+  departureCity: '',
+  arrivalCity: '',
+  departureTime: '',
+  arrivalTime: '',
+  price: '',
+  capacity: '',
+  availableSeats: ''
+});
+const [flights, setFlights] = useState([]);
+const [editingFlightId, setEditingFlightId] = useState(null);
 
-      if (response.status === 200) {
-        alert('Flight saved successfully!');
-        // Optionally, clear input fields after successful save
-        setFlightNumber('');
-        setAirline('');
-        setDepartureCity('');
-        setArrivalCity('');
-        setDepartureTime(new Date());
-        setArrivalTime(new Date());
-        setPrice('');
-      } else {
-        alert('Failed to save flight. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error saving flight:', error);
-      alert('Error saving flight. Please try again later.');
-    }
-  };
+useEffect(() => {
+  fetchFlights();
+}, []);
 
-  return (
-    <div className="admin-dashboard-container">
-      <h2>Admin Dashboard</h2>
-      <input
-        type="text"
-        placeholder="Flight Number"
-        value={flightNumber}
-        onChange={(e) => setFlightNumber(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Airline"
-        value={airline}
-        onChange={(e) => setAirline(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Departure City"
-        value={departureCity}
-        onChange={(e) => setDepartureCity(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Arrival City"
-        value={arrivalCity}
-        onChange={(e) => setArrivalCity(e.target.value)}
-      />
-      <div className="date-picker-container">
-        <label>Departure Time:</label>
-        <DatePicker
-          selected={departureTime}
-          onChange={(date) => setDepartureTime(date)}
-          showTimeSelect
-          dateFormat="MMMM d, yyyy h:mm aa"
-        />
-      </div>
-      <div className="date-picker-container">
-        <label>Arrival Time:</label>
-        <DatePicker
-          selected={arrivalTime}
-          onChange={(date) => setArrivalTime(date)}
-          showTimeSelect
-          dateFormat="MMMM d, yyyy h:mm aa"
-        />
-      </div>
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <button onClick={handleSaveFlight}>Save Flight</button>
-    </div>
-  );
+const fetchFlights = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/flights');
+    setFlights(response.data);
+  } catch (error) {
+    console.error('Error fetching flights:', error);
+  }
 };
+
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFlightData({ ...flightData, [name]: value });
+};
+
+const handleSaveFlight = async () => {
+  try {
+    if (editingFlightId) {
+      await axios.put(`http://localhost:8080/flights/${editingFlightId}`, flightData);
+    } else {
+      await axios.post('http://localhost:8080/flights', flightData);
+    }
+    alert('Flight saved successfully!');
+    resetForm();
+    fetchFlights();
+  } catch (error) {
+    console.error('Error saving flight:', error);
+    alert(`Error saving flight: ${error.response?.data?.message || error.message}`);
+  }
+};
+
+const handleDeleteFlight = async (id) => {
+  if (window.confirm('Are you sure you want to delete this flight?')) {
+    try {
+      await axios.delete(`http://localhost:8080/flights/${id}`);
+      alert('Flight deleted successfully!');
+      fetchFlights();
+    } catch (error) {
+      console.error('Error deleting flight:', error);
+      alert(`Error deleting flight: ${error.response?.data?.message || error.message}`);
+    }
+  }
+};
+
+const handleEditFlight = (flight) => {
+  setFlightData({
+    ...flight,
+    departureTime: formatDateForInput(flight.departureTime),
+    arrivalTime: formatDateForInput(flight.arrivalTime)
+  });
+  setEditingFlightId(flight.id);
+};
+
+const formatDateForInput = (datetime) => {
+  return datetime ? datetime.slice(0, 16) : ''; // Adjust format as needed
+};
+
+const resetForm = () => {
+  setFlightData({
+    flightNumber: '',
+    airline: '',
+    departureCity: '',
+    arrivalCity: '',
+    departureTime: '',
+    arrivalTime: '',
+    price: '',
+    capacity: '',
+    availableSeats: ''
+  });
+  setEditingFlightId(null);
+};
+
+return (
+  <div className="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+    <div className="flight-form">
+      <input name="flightNumber" value={flightData.flightNumber} onChange={handleInputChange} placeholder="Flight Number" />
+      <input name="airline" value={flightData.airline} onChange={handleInputChange} placeholder="Airline" />
+      <input name="departureCity" value={flightData.departureCity} onChange={handleInputChange} placeholder="Departure City" />
+      <input name="arrivalCity" value={flightData.arrivalCity} onChange={handleInputChange} placeholder="Arrival City" />
+      <input name="departureTime" type="datetime-local" value={flightData.departureTime} onChange={handleInputChange} placeholder="Departure Time" />
+      <input name="arrivalTime" type="datetime-local" value={flightData.arrivalTime} onChange={handleInputChange} placeholder="Arrival Time" />
+      <input name="price" value={flightData.price} onChange={handleInputChange} placeholder="Price" />
+      <input name="capacity" value={flightData.capacity} onChange={handleInputChange} placeholder="Capacity" />
+      <input name="availableSeats" value={flightData.availableSeats} onChange={handleInputChange} placeholder="Available Seats" />
+      <button onClick={handleSaveFlight}>{editingFlightId ? 'Update Flight' : 'Save Flight'}</button>
+      {editingFlightId && <button onClick={resetForm}>Cancel Edit</button>}
+    </div>
+    <div className="flight-list">
+      <h2>Flight List</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Flight Number</th>
+            <th>Airline</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {flights.map((flight) => (
+            <tr key={flight.id}>
+              <td>{flight.flightNumber}</td>
+              <td>{flight.airline}</td>
+              <td>{flight.departureCity}</td>
+              <td>{flight.arrivalCity}</td>
+              <td>
+                <button onClick={() => handleEditFlight(flight)}>Edit</button>
+                <button onClick={() => handleDeleteFlight(flight.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+};
+
+
 
 export default AdminDashboardComponent;
