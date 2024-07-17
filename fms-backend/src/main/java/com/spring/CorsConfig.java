@@ -17,7 +17,10 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("Content-Type", "Authorization")
                         .exposedHeaders("Content-Type", "Authorization")
-                        .allowCredentials(true);
+                        .exposedHeaders("Authorization")
+                        .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
             }
         };
     }
