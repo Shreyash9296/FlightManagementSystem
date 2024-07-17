@@ -1,34 +1,55 @@
 import React, { useState } from 'react';
-import axios from 'react';
+import axios from 'axios';
 
-export const Registration = () => {
+const Registration = () => {
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmpassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios.post('/user/register', {
+    try {
+      const response = await axios.post('http://localhost:8080/user/register', {
+        id,
         name,
         email,
         password
-      })
-      .then(response => {
-        console.log(response.data);
-        // Handle successful registration
-      })
-     .catch(error => {
-        setError(error.response.data);
       });
+      console.log(response.data);
+      setSuccessMessage('User registered successfully!');
+      // Reset form fields
+      setId('');
+      setName('');
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Error:', error);
+      if (error.response && error.response.data) {
+        setError(error.response.data);
+      } else {
+        setError('An unexpected error occurred');
+      }
+    }
   };
-  
 
   return (
     <div>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
+      <label>
+          ID:
+          <input
+            type="number"
+            value={id}
+            onChange={(event) => setId(event.target.value)}
+            placeholder="Create your USER ID"
+            required
+          />
+        </label>
+        <br />
         <label>
           Name:
           <input
@@ -36,6 +57,7 @@ export const Registration = () => {
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder="Enter your name"
+            required
           />
         </label>
         <br />
@@ -46,6 +68,7 @@ export const Registration = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Enter your email"
+            required
           />
         </label>
         <br />
@@ -56,21 +79,16 @@ export const Registration = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter your password"
-          />
-        </label>
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={confirmpassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            placeholder="Enter your password"
+            required
           />
         </label>
         <br />
         <button type="submit">Register</button>
         {error && <div style={{ color: 'red' }}>{error}</div>}
+        {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
       </form>
     </div>
   );
 };
+
+export default Registration;

@@ -1,0 +1,22 @@
+
+.profile {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #1f1e1e;
+    border-radius: 5px;
+    background-color: #cd1515;
+}
+
+.profile-details {
+    margin-top: 20px;
+}
+
+.profile-details h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.profile-details p {
+    margin-bottom: 5px;
+}

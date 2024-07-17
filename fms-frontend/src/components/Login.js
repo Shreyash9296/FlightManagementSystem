@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'react';
+import axios from 'axios';
+import '../style/login.css'
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -8,18 +9,33 @@ export const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('/user/login', {
+    axios.post('http://localhost:8080/user/login', {
       email,
       password
     })
     .then(response => {
-      console.log(response.data);
-      // Handle successful registration
+      if (response.data === 'Login successful') {
+        console.log('Login successful!');
+        // Perform additional actions upon successful login if needed
+        // For example, redirect to another page or set user authentication state
+      } else {
+        console.error('Login failed:', response.data);
+        setError(response.data); // Set error message received from the backend
+      }
     })
-   .catch(error => {
-      setError(error.response.data);
+    .catch(error => {
+      console.error('Error:', error);
+      if (error.response) {
+        console.error('Response status:', error.response.status);
+        console.error('Response data:', error.response.data);
+        setError(error.response.data); // Set error message based on server response
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error setting up the request:', error.message);
+      }
     });
-};
+  };
 
   return (
     <div>
@@ -51,3 +67,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export default LoginPage;
