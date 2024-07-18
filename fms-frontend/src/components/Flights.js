@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../style/flights.css';
-
+axios.defaults.withCredentials = true;
 const FlightBookingComponent = () => { 
   const [flights, setFlights] = useState([]);
   const [selectedFlight, setSelectedFlight] = useState(null);
@@ -11,7 +11,7 @@ const FlightBookingComponent = () => {
     email: '',
     numberOfPassengers: 1
   });
-  const [totalPrice, setTotalPrice] = useState(0); // State for total price
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     fetchFlights();
@@ -35,7 +35,6 @@ const FlightBookingComponent = () => {
     const parsedValue = name === 'numberOfPassengers' ? parseInt(value) : value;
     setBookingData({ ...bookingData, [name]: parsedValue });
 
-    // Calculate total price
     if (name === 'numberOfPassengers' && selectedFlight) {
       const totalPrice = selectedFlight.price * parsedValue;
       setTotalPrice(totalPrice);
@@ -43,49 +42,79 @@ const FlightBookingComponent = () => {
   };
 
   const handleConfirmBooking = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/bookings', {
-        ...bookingData,
-        flight: { id: selectedFlight.id }
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        alert('Booking confirmed successfully!');
-        setSelectedFlight(null);
-        setBookingData({
-          passengerName: '',
-          contactNumber: '',
-          email: '',
-          numberOfPassengers: 1
+    const maxRetries = 3;
+    let retries = 0;
+  
+    while (retries < maxRetries) {
+      try {
+        console.log(`Attempt ${retries + 1}: Sending booking request...`);
+        const response = await fetch('http://localhost:8080/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            ...bookingData,
+            flight: { id: selectedFlight.id }
+          }),
         });
-        setTotalPrice(0); // Reset total price
-      } else {
-        console.error('Failed to confirm booking:', response);
-        alert('Failed to confirm booking. Please try again.');
-      }
-    } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.error('Server Error:', error.response.data);
-        alert(`Server Error: ${error.response.data.message || 'Failed to confirm booking. Please try again.'}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('Request Error:', error.request);
-        alert('Request Error: No response received. Please try again later.');
-      } else {
-        // Something happened in setting up the request that triggered an error
-        console.error('Error:', error.message);
-        alert(`Error: ${error.message || 'Failed to confirm booking. Please try again.'}`);
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Booking successful:', data);
+          alert('Booking confirmed successfully!');
+          setSelectedFlight(null);
+          setBookingData({
+            passengerName: '',
+            contactNumber: '',
+            email: '',
+            numberOfPassengers: 1
+          });
+          setTotalPrice(0);
+          return;
+        } else {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+      } catch (error) {
+        retries++;
+        console.error(`Attempt ${retries} failed:`, error);
+  
+        if (retries === maxRetries) {
+          alert(`Failed to confirm booking after ${maxRetries} attempts. Please check the console for more details.`);
+        } else {
+          console.log(`Waiting 2 seconds before retry...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
     }
   };
 
+
+
+  const testServerConnection = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/flights', { 
+        timeout: 5000,
+        withCredentials: true
+      });
+      console.log('Server connection test successful:', response.status);
+    } catch (error) {
+      console.error('Server connection test failed:', error);
+    }
+  };
+  
+  // Call this in useEffect
+  useEffect(() => {
+    fetchFlights();
+    testServerConnection();
+  }, []);
   return (
     <div className="flight-booking-container">
       <h2>Available Flights</h2>
       {flights.map((flight) => (
         <div key={flight.id} className="flight-info">
-          <p>Flight ID: {flight.id}</p> {/* Added Flight ID */}
+          <p>Flight ID: {flight.id}</p>
           <p>Flight Number: {flight.flightNumber}</p>
           <p>Airline: {flight.airline}</p>
           <p>Departure: {flight.departureCity} at {new Date(flight.departureTime).toLocaleString()}</p>
@@ -128,13 +157,12 @@ const FlightBookingComponent = () => {
             onChange={handleInputChange}
             min="1"
           />
-          <p>Total Price: ${totalPrice}</p> {/* Display total price */}
+          <p>Total Price: ${totalPrice}</p>
           <button onClick={handleConfirmBooking}>Confirm Booking</button>
         </div>
       )}
     </div>
   );
 };
-
 
 export default FlightBookingComponent;

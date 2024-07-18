@@ -28,6 +28,7 @@ export const Nav = () => {
         <Link to="/Contact">Contact Us</Link>
         <Link to="/Destination">Destination</Link>
         <Link to="/Flights">Flights</Link>
+        <Link to ="/register">Register</Link>
         {isLoggedIn ? (
           <>
             <button className="logout-button" onClick={handleLogout}>Logout</button>
@@ -54,7 +55,7 @@ export const Nav = () => {
         <Route path="/Destination" element={<Destination />} />
         <Route path="/Flights" element={<FlightBookingComponent />} /> {/* Render FlightBookingComponent only on /Flights route */}
         <Route path="/Login" element={<LoginPage />} />
-        <Route path="/Registration" element={<Registration />} />
+        <Route path="/register" element={<Registration />} />
         <Route path="/profileviewer" element={<ProfileViewer />} />
         <Route path="/admin/login" element={<AdminLoginComponent />} />
         <Route path="/admin/dashboard" element={<AdminDashboardComponent />} />

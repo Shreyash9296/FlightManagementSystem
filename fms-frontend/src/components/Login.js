@@ -14,10 +14,11 @@ export const LoginPage = () => {
       password
     })
     .then(response => {
-      if (response.data === 'Login successful') {
+      console.log('Response data:', response.data); 
+    
+      if (response.status === 200 && response.data.trim() === 'Login successful') {
         console.log('Login successful!');
-        // Perform additional actions upon successful login if needed
-        // For example, redirect to another page or set user authentication state
+        setError(null); 
       } else {
         console.error('Login failed:', response.data);
         setError(response.data); // Set error message received from the backend
@@ -31,10 +32,13 @@ export const LoginPage = () => {
         setError(error.response.data); // Set error message based on server response
       } else if (error.request) {
         console.error('No response received:', error.request);
+        setError('No response received from the server');
       } else {
         console.error('Error setting up the request:', error.message);
+        setError('Error setting up the request');
       }
     });
+    
   };
 
   return (

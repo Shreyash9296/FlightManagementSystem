@@ -29,7 +29,7 @@ public class BookingService {
     }
 
     public Booking createBooking(Booking booking) {
-        return bookingRepository.save(booking); // Return the saved booking
+        return bookingRepository.save(booking); 
     }
 
     public Booking updateBooking(int id, Booking booking) {
