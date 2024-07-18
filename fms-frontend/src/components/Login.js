@@ -9,6 +9,7 @@ export const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    try{
     axios.post('http://localhost:8080/user/login', {
       email,
       password
@@ -22,8 +23,8 @@ export const LoginPage = () => {
         console.error('Login failed:', response.data);
         setError(response.data); // Set error message received from the backend
       }
-    })
-    .catch(error => {
+    })}
+    catch(error) {
       console.error('Error:', error);
       if (error.response) {
         console.error('Response status:', error.response.status);
@@ -34,7 +35,7 @@ export const LoginPage = () => {
       } else {
         console.error('Error setting up the request:', error.message);
       }
-    });
+    };
   };
 
   return (
