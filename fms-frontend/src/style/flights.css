@@ -1,0 +1,110 @@
+/* Main container */
+.flight-booking-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styles */
+  .flight-booking-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Flight info block */
+  .flight-info {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .flight-info p {
+    margin: 5px 0;
+  }
+  
+  .flight-info button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .flight-info button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Booking form */
+  .booking-form {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .booking-form h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .booking-form input[type="text"],
+  .booking-form input[type="tel"],
+  .booking-form input[type="email"],
+  .booking-form input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .booking-form input[type="text"]:focus,
+  .booking-form input[type="tel"]:focus,
+  .booking-form input[type="email"]:focus,
+  .booking-form input[type="number"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .booking-form p {
+    margin-bottom: 5px;
+  }
+  
+  .booking-form .total-price {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .booking-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .booking-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .flight-booking-container {
+      padding: 10px;
+    }
+  
+    .booking-form {
+      padding: 15px;
+    }
+  }
+  

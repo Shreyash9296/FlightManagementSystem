@@ -2,6 +2,9 @@ package com.spring.service;
 
 import com.spring.model.Flight;
 import com.spring.repository.FlightRepository;
+
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,8 @@ public class FlightService {
     }
 
     public Flight getFlightById(int id) {
-        return flightRepository.findById(id).get();
+        java.util.Optional<Flight> flight = flightRepository.findById(id);
+        return flight.orElse(null);
     }
 
     public List<Flight> getFlightsByCities(String departureCity, String arrivalCity) {
@@ -27,7 +31,7 @@ public class FlightService {
     }
 
     public List<Flight> getFlightsByDateRange(Date startDate, Date endDate) {
-        return flightRepository.findByDepartureDateBetween(startDate, endDate);
+        return flightRepository.findByDepartureTimeBetween(startDate, endDate);
     }
 
     public Flight createFlight(Flight flight) {

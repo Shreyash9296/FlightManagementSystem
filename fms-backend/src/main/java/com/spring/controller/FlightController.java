@@ -3,8 +3,10 @@ package com.spring.controller;
 import com.spring.model.Flight;
 import com.spring.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +23,13 @@ public class FlightController {
     }
 
     @GetMapping("/{id}")
-    public Flight getFlightById(@PathVariable int id) {
-        return flightService.getFlightById(id);
+    public ResponseEntity<Flight> getFlightById(@PathVariable int id) {
+        Flight flight = flightService.getFlightById(id);
+        if (flight != null) {
+            return ResponseEntity.ok(flight);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/cities/{departureCity}/{arrivalCity}")
@@ -30,24 +37,34 @@ public class FlightController {
         return flightService.getFlightsByCities(departureCity, arrivalCity);
     }
 
-    @GetMapping("/date-range/{startDate}/{endDate}")
-    public List<Flight> getFlightsByDateRange(@PathVariable Date startDate, @PathVariable Date endDate) {
+    @GetMapping("/date-range")
+    public List<Flight> getFlightsByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         return flightService.getFlightsByDateRange(startDate, endDate);
     }
 
     @PostMapping
-    public Flight createFlight(@RequestBody Flight flight) {
-        return flightService.createFlight(flight);
+    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
+        System.out.println("Received flight data: " + flight);
+        Flight savedFlight = flightService.createFlight(flight);
+        return ResponseEntity.ok(savedFlight);
     }
 
     @PutMapping("/{id}")
-    public Flight updateFlight(@PathVariable int id, @RequestBody Flight flight) {
+    public ResponseEntity<Flight> updateFlight(@PathVariable int id, @RequestBody Flight flight) {
         flight.setId(id);
-        return flightService.updateFlight(flight);
+        Flight updatedFlight = flightService.updateFlight(flight);
+        if (updatedFlight != null) {
+            return ResponseEntity.ok(updatedFlight);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFlight(@PathVariable int id) {
+    public ResponseEntity<Void> deleteFlight(@PathVariable int id) {
         flightService.deleteFlight(id);
+        return ResponseEntity.noContent().build();
     }
 }
