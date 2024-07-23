@@ -1,56 +1,58 @@
-// ProfileViewer.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios or any HTTP library
-import '../style/profile.css'
+import axios from 'axios';
+import '../style/profile.css';
+
 const ProfileViewer = () => {
     const [user, setUser] = useState({});
     const [booking, setBooking] = useState({});
-    const [airport, setAirport] = useState({});
+    const [airport, setAirport] = useState({
+        airportCode: '',
+        airportName: '',
+        city: '',
+        country: 'India'
+    });
 
     useEffect(() => {
-        // Function to fetch user data
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('/user/{userId}');
+                const response = await axios.get('http://localhost:8080/user/1'); 
                 setUser(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
         };
 
-        // Function to fetch booking data
         const fetchBookingData = async () => {
             try {
-                const response = await axios.get('/bookings/{bookingId}');
+                const response = await axios.get('http://localhost:8080/bookings/6'); 
                 setBooking(response.data);
+
+                const flightId = response.data.flight.id;
+                const flightResponse = await axios.get(`http://localhost:8080/flights/${flightId}`);
+                const flight = flightResponse.data;
+
+                setAirport({
+                    airportCode: Math.floor(Math.random() * 9000000) + 1000000,
+                    airportName: `${flight.departureCity} International Airport`,
+                    city: flight.departureCity,
+                    country: 'India'
+                });
             } catch (error) {
                 console.error('Error fetching booking data:', error);
             }
         };
 
-        // Function to fetch airport data
-        const fetchAirportData = async () => {
-            try {
-                const response = await axios.get('/airports/{airportId}');
-                setAirport(response.data);
-            } catch (error) {
-                console.error('Error fetching airport data:', error);
-            }
-        };
-
-        // Call all fetch functions
         fetchUserData();
         fetchBookingData();
-        fetchAirportData();
-    }, []); // Empty dependency array ensures useEffect runs only once on component mount
+    }, []); 
 
     return (
         <div className="profile">
             <h2>Profile Viewer</h2>
             <div className="profile-details">
                 <h3>User Info</h3>
-                <p>Name: {user.name}</p>
-                <p>Email: {user.email}</p>
+                <p>Name: {booking.passengerName}</p>
+                <p>Email: {booking.email}</p>
 
                 <h3>Booking Info</h3>
                 <p>Passenger Name: {booking.passengerName}</p>

@@ -1,0 +1,48 @@
+.register-container {
+    width: 500px; /* Adjust width as per your design */
+    margin: 0 auto; /* Center align the form */
+    padding: 20px; /* Add padding for spacing */
+    border: 1px solid #ccc; /* Optional: Add border for visibility */
+  }
+  
+  .register-container h1 {
+    text-align: center; /* Center align the heading */
+  }
+  
+  .register-form {
+    margin-top: 20px;
+    width: 500px; 
+    margin-left: 550px;/* Optional: Add margin above the form */
+  }
+  
+  .register-form label {
+    display: block; /* Ensure labels are displayed in block format */
+    margin-bottom: 10px; /* Optional: Add space below each label */
+  }
+  
+  .register-form input, .register-form textarea {
+    width: 500px; /* Make inputs and textarea full-width within their container */
+    padding: 10px; /* Add padding for input fields */
+    margin-bottom: 10px; /* Optional: Add space between inputs */
+  }
+  
+  .register-form button {
+    background-color: #032e7d; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 300px;
+    margin-left: 100px;
+    margin-bottom:20px ;
+  }
+  
+  
+  .register-form button:hover {
+    background-color: #2cb3bf;
+  }
+  
+ 
+  
+  
+  

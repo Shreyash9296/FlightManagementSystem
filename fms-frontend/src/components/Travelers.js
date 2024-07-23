@@ -13,7 +13,7 @@ const Travelers = () => (
         </div>
       </div>
       <div className="travellers__card">
-        <img src="/assets/traveller-2.jpg" alt="travel place" />
+        <img src="C:\Users\shrey\Music\clone3\FlightManagementSystem\fms-frontend\src\assets\paris.jpg" alt="travel place" />
         <div className="travellers__card__content">
           <h4>New York City, USA</h4>
           <p>The City That Never Sleeps</p>

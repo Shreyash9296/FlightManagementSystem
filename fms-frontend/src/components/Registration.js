@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import '../style/Register.css'
 const Registration = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -38,7 +38,7 @@ const Registration = () => {
   return (
     <div>
       <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='register-form'>
       <label>
           ID:
           <input

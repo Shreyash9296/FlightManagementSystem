@@ -1,0 +1,104 @@
+.ticket-viewer-container {
+    width: 60%;
+    margin: 25px auto;
+    padding: 50px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.ticket-viewer-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.ticket-viewer-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 300px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ticket-viewer-container button:hover {
+    background-color: #0056b3;
+}
+
+#ticketInput {
+    margin: 20px 0;
+}
+
+#ticketInput input {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.ticket-details {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.ticket-details h3, .ticket-details h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.ticket-details p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.payment-method {
+    margin: 20px 0;
+}
+
+.payment-method label {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.upi-details, .debit-details {
+    margin: 10px 0;
+}
+
+.upi-details input, .debit-details input {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.payment-success {
+    margin-top: 20px;
+    padding: 10px;
+    border: 2px solid green;
+    border-radius: 5px;
+    background-color: #e6ffe6;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.payment-success p {
+    font-size: 18px;
+    color: green;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

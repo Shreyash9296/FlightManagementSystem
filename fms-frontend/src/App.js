@@ -9,6 +9,15 @@ import FlightBookingComponent from './components/Flights';
 import ProfileViewer from './components/ProfileViewer'; // Import ProfileViewer component
 import AdminDashboardComponent from './components/AdminDashboardComponent'; // Import AdminDashboardComponent
 import './style/ProjectStyle.css';
+import TicketViewer from './components/TicketViewer';
+import './App.css'
+import './style/admin.css'
+import './style/login.css'
+import './style/contact.css'
+import './style/admindash.css'
+import './style/profile.css'
+import './style/flights.css'
+import './style/ticketViewer.css'
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +34,7 @@ const App = () => {
         <div className="App">
             <Nav isLoggedIn={isLoggedIn} onLogout={handleLogout} /> {/* Pass isLoggedIn state and logout function to Nav component */}
             <Header />
-            <BookingForm />
+            <TicketViewer/>
             <Travelers />
             <FlightBookingComponent /> {/* Render FlightBookingComponent */}
             {isLoggedIn ? <ProfileViewer /> : <Home />} {/* Conditional rendering based on isLoggedIn state */}

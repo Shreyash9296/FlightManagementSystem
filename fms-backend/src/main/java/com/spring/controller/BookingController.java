@@ -2,6 +2,8 @@ package com.spring.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.spring.model.Booking;
 import com.spring.service.BookingService;
 import org.slf4j.Logger;
@@ -36,17 +38,11 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBooking(@RequestBody Booking bookingRequest) {
-        logger.info("Received booking request: {}", bookingRequest);
-        try {
-            Booking savedBooking = bookingService.createBooking(bookingRequest);
-            logger.info("Booking successful");
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
-        } catch (Exception e) {
-            logger.error("Error processing booking: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Booking failed");
-        }
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking bookingRequest) {
+        Booking savedBooking = bookingService.createBooking(bookingRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
     }
+    
 
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable int id, @RequestBody Booking booking) {

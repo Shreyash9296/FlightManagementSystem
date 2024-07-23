@@ -2,7 +2,8 @@
     max-width: 600px; /* Adjust width as per your design */
     margin: 0 auto; /* Center align the form */
     padding: 20px; /* Add padding for spacing */
-    border: 1px solid #ccc; /* Optional: Add border for visibility */
+    border: 1px solid #ccc;
+    margin-bottom: 20px; /* Optional: Add border for visibility */
   }
   
   .contact-container h1 {
@@ -10,7 +11,8 @@
   }
   
   .contact-form {
-    margin-top: 20px; /* Optional: Add margin above the form */
+    margin-top: 20px; 
+    /* Optional: Add margin above the form */
   }
   
   .contact-form label {
@@ -25,15 +27,17 @@
   }
   
   .contact-form button {
-    background-color: #4CAF50; /* Green */
+    background-color: #032e7d; 
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+    margin-left: 220px;
+    
   }
   
   .contact-form button:hover {
-    background-color: #45a049;
+    background-color: #2cb3bf;
   }
   
   .contact-form .message {

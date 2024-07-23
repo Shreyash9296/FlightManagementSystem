@@ -9,7 +9,8 @@ const FlightBookingComponent = () => {
     passengerName: '',
     contactNumber: '',
     email: '',
-    numberOfPassengers: 1
+    numberOfPassengers: 1,
+    flight: null  // Add this line to initialize the flight property
   });
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -40,56 +41,51 @@ const FlightBookingComponent = () => {
       setTotalPrice(totalPrice);
     }
   };
-
+ 
   const handleConfirmBooking = async () => {
-    const maxRetries = 3;
-    let retries = 0;
+    try {
+      console.log('Sending booking request...');
+      const bookingPayload = {
+        passengerName: bookingData.passengerName,
+        contactNumber: bookingData.contactNumber,
+        email: bookingData.email,
+        numberOfPassengers: bookingData.numberOfPassengers,
+        flight: { id: selectedFlight.id }
+      };
+      console.log('Booking Data:', bookingPayload);
   
-    while (retries < maxRetries) {
-      try {
-        console.log(`Attempt ${retries + 1}: Sending booking request...`);
-        const response = await fetch('http://localhost:8080/bookings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            ...bookingData,
-            flight: { id: selectedFlight.id }
-          }),
-        });
+      const response = await axios.post('http://localhost:8080/bookings', bookingPayload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
   
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Booking successful:', data);
-          alert('Booking confirmed successfully!');
-          setSelectedFlight(null);
-          setBookingData({
-            passengerName: '',
-            contactNumber: '',
-            email: '',
-            numberOfPassengers: 1
-          });
-          setTotalPrice(0);
-          return;
-        } else {
-          throw new Error(`Server responded with status: ${response.status}`);
-        }
-      } catch (error) {
-        retries++;
-        console.error(`Attempt ${retries} failed:`, error);
-  
-        if (retries === maxRetries) {
-          alert(`Failed to confirm booking after ${maxRetries} attempts. Please check the console for more details.`);
-        } else {
-          console.log(`Waiting 2 seconds before retry...`);
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        }
+      console.log('Booking successful:', response.data);
+      alert('Booking confirmed successfully!');
+      
+      // Reset form and state
+      setSelectedFlight(null);
+      setBookingData({
+        passengerName: '',
+        contactNumber: '',
+        email: '',
+        numberOfPassengers: 1
+      });
+      setTotalPrice(0);
+    } catch (error) {
+      console.error('Booking failed:', error);
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        console.error('Error status:', error.response.status);
+        alert(`Booking failed: ${error.response.data}`);
+      } else if (error.request) {
+        alert('Booking failed: No response received from server');
+      } else {
+        alert(`Booking failed: ${error.message}`);
       }
     }
   };
-
 
 
   const testServerConnection = async () => {

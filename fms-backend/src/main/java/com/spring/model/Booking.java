@@ -1,7 +1,7 @@
 package com.spring.model;
 
 import javax.persistence.*;
-
+import com.spring.model.Flight;
 @Entity
 @Table
 public class Booking {
@@ -15,10 +15,10 @@ public class Booking {
     private int numberOfPassengers;
 
     @ManyToOne
-    @JoinColumn(name = "flight_id")
+    @JoinColumn(name = "flight_id", referencedColumnName = "id")  // Maps 'flight_id' in 'booking' to 'id' in 'flights'
     private Flight flight;
 
-    // Getters and Setters
+   
 
     public int getId() {
         return id;

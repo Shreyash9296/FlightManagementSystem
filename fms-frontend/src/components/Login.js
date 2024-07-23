@@ -44,7 +44,7 @@ export const LoginPage = () => {
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='login-form'>
         <label>
           Email:
           <input

@@ -7,6 +7,7 @@ import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -33,15 +34,19 @@ public class FlightService {
     public List<Flight> getFlightsByDateRange(Date startDate, Date endDate) {
         return flightRepository.findByDepartureTimeBetween(startDate, endDate);
     }
-
+    @Transactional
+    public Flight saveFlight(Flight flight) {
+        return flightRepository.save(flight);
+    }
+    @Transactional
     public Flight createFlight(Flight flight) {
         return flightRepository.save(flight);
     }
-
+@Transactional
     public Flight updateFlight(Flight flight) {
         return flightRepository.save(flight);
     }
-
+@Transactional
     public void deleteFlight(int id) {
         flightRepository.deleteById(id);
     }
